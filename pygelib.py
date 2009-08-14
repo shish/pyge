@@ -68,6 +68,10 @@ class Archive(object):
         data = self.file.read(self.list[name]["length"])
         if(self.decrypt):
             data = self.decrypt(data)
+        # for some reason, the first couple of oggs in a
+        # pac3 archive are offset by an extra 12 bytes...
+        if data[0:32].find("OggS") > 0:
+            data = data[data[0:32].find("OggS"):]
         ofile.write(data)
         return len(data)
 
