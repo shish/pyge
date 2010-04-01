@@ -1,93 +1,78 @@
 #!/usr/bin/python
 
 import os, os.path, sys
-import getopt, struct, re
+import struct, re
 from array import array
+from optparse import OptionParser
 import pygelib
 
-def print_help():
-    print "Usage: pyge [options]"
-    print " -f <arcname>    operate on this archive"
-    print " -F <format>     explicitly set the format"
-    print " -x <filename>   extract a file"
-    print " -X              extract all files"
-    print " -l              list files"
-    print " -c              create archive"
-
 def main():
-    plugins = pygelib.load_plugins("/home/shish/src/pyge/plugins")
+    plugins = pygelib.load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
 
-    filename = None
+    parser = OptionParser()
+    parser.add_option("-f", "--file", dest="filename",
+            help="file (archive) to operate on", metavar="FILE")
+    parser.add_option("-x", "--extract",
+            action="store_true", dest="do_extract", default=False,
+            help="extract files")
+    parser.add_option("-l", "--list",
+            action="store_true", dest="do_list", default=False,
+            help="list archive contents")
+    parser.add_option("-c", "--create",
+            action="store_true", dest="do_create", default=False,
+            help="create new archive")
+    parser.add_option("-F", "--format", dest="format",
+            help="archive format", metavar="FMT")
+    parser.add_option("-L", "--format-list",
+            action="store_true", dest="do_format_list", default=False,
+            help="list known formats")
+
+    (options, args) = parser.parse_args()
+
     fp = None
     archive = None
-    do_extract = False
-    do_list = False
-    do_create = False
-    format = None
-    extractName = None
 
-    if(len(sys.argv) == 2):
-        do_extract = True
-        filename = sys.argv[1]
+    if options.do_format_list:
+        for name in plugins:
+            print "%15s: %s" % (plugins[name].name, plugins[name].desc)
+        return
 
-    try:
-        optlist, args = getopt.getopt(sys.argv[1:], "Xx:f:p:lcF:")
-    except getopt.GetoptError, goe:
-        print "Unrecognised option"
-        print_help()
-        return 1
-
-    for a, o in optlist:
-        if a == "-x":
-            do_extract = True
-            extractName = o
-        if a == "-X":
-            do_extract = True
-            extractName = None
-        if a == "-l":
-            do_list = True
-        if a == "-f":
-            filename = o
-        if a == "-F":
-            format = o
-        if a == "-c":
-            do_create = True
-
-    if filename == None:
+    if options.filename == None:
         print "Filename not specified"
         return
     else:
-        fp = open(filename, 'rb+')
-        if format:
-            archive = formats[format](filename, fp)
+        fp = open(options.filename, 'rb+')
+        if options.format:
+            archive = plugins[options.format](options.filename, fp)
         else:
             for plugin in plugins:
-                if plugin(filename, fp).detect():
+                if plugin(options.filename, fp).detect():
                     print "Detected format: %s" % (plugin.name)
-                    archive = plugin(filename, fp)
+                    archive = plugin(options.filename, fp)
                     break
 
     if archive == None:
         print "Unknown format"
         return
 
-    if do_create:
+    if options.do_create:
         archive.create(args)
 
-    if do_list:
+    if options.do_list:
         archive.read()
         print "%20s : %8s %8s" % ("Name", "Offset", "Length")
         for name in archive.list:
             data = archive.list[name]
             print "%20s : %8i %8i" % (data["name"], data["start"], data["length"])
 
-    if do_extract:
+    if options.do_extract:
         archive.read()
-        if extractName == None:
-            for name in archive.list:
+        if args:
+            for name in args:
                 archive.extract(name)
         else:
-            archive.extract(extractName)
+            for name in archive.list:
+                archive.extract(name)
 
 if __name__ == "__main__":
     main()
