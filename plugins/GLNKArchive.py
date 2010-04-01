@@ -5,7 +5,8 @@ import struct
 # GLNK (.gl) as found in Present for You
 #
 class GLNKArchive(Archive):
-    name = "GLNK (Present for You)"
+    name = "GLNK"
+    desc = "Present for You"
     sig = "GLNK"
     header_fmt = "<4sxxi"
     entry_fmt = "<iiB"

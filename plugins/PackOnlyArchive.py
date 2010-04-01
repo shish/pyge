@@ -13,7 +13,8 @@ from pygelib import Archive
 # 
 #
 class PackOnlyArchive(Archive):
-    name = "PackOnly (Cross Channel)"
+    name = "PackOnly"
+    desc = "Cross Channel"
     sig = "PackOnly"
     header_fmt = "<8s56xQ"
     entry_fmt = "<128sQQ"
@@ -43,7 +44,8 @@ class PackOnlyArchive(Archive):
 # 
 #
 class PackPlusArchive(PackOnlyArchive):
-    name = "PackPlus (Cross Channel)"
+    name = "PackPlus"
+    desc = "Cross Channel"
     sig = "PackPlus"
 
     def xorit(self, data):

@@ -6,7 +6,8 @@ from pygelib import Archive
 # FileCMB (.dat) as found in Roommate
 #
 class FileCMBArchive(Archive):
-    name = "FileCMB (Roommate)"
+    name = "FileCMB"
+    desc = "Roommate"
     sig = "FILECMB-DATA-LIST-IN\x0A"
     header_fmt = "<21s"
     entry_fmt = "<ii24s"

@@ -7,7 +7,8 @@ from pygelib import Archive
 # broken (count, start and length don't work...)
 #
 class BIGFArchive(Archive):
-    name = "BigF (SSX3)"
+    name = "BigF"
+    desc = "SSX3"
     sig = "BIGF"
     header_fmt = "<4s4x4xi"
     entry_fmt = "<ii14s"

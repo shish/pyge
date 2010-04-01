@@ -9,7 +9,8 @@ from pygelib import Archive
 # Writer untestable -- comes from read only media (PS2 game)
 #
 class LMPArchive(Archive):
-    name = "LMP (The Bard's Tale)"
+    name = "LMP"
+    desc = "The Bard's Tale"
     sig = ""
     header_fmt = "<i"
     entry_fmt = "<56sii"

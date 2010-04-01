@@ -2,6 +2,7 @@ import struct
 from pygelib import Sound
 
 class NWASound(Sound):
+    name = "NWA"
     sig = None
     nwa_fmt = "<hhiiiiiii"
     wav_fmt = "<4si4s4sihhiihh4si"

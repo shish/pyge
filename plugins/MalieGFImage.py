@@ -5,6 +5,7 @@ from pygelib import Image
 # MalieGF (.mgf) image -- really just a PNG with first few bytes swapped
 #
 class MalieGFImage(Image):
+    name = "MalieGF"
     sig = "MalieGF"
 
     def read(self):

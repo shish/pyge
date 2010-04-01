@@ -8,7 +8,8 @@ from pygelib import Archive
 # since all formats inside the archive are proprietary...
 #
 class CAPFArchive(Archive):
-    name = "CAPF (Shuffle, Tick Tack)"
+    name = "CAPF"
+    desc = "Various Navel games (Shuffle, Tick Tack)"
     sig = "CAPF"
     header_fmt = "<4s8xi16x"
     entry_fmt = "<ii32s"

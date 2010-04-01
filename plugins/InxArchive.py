@@ -5,7 +5,8 @@ from pygelib import Archive
 # Inx (.Inx / .Snn) as found in Oppai Life
 #
 class InxArchive(Archive):
-    name = "Inx / Snn (Oppai Life)"
+    name = "Inx / Snn"
+    desc = "Oppai Life"
     header_fmt = "<i"
     entry_fmt = "<64sii"
 

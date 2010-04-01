@@ -8,7 +8,8 @@ from pygelib import Archive
 # no data change tested since it's all proprietary formats
 #
 class VFArchive(Archive):
-    name = "VFS (CraziesT)"
+    name = "VFS"
+    desc = "CraziesT"
     sig = "VF\x01\x01"
     header_fmt = "<4sh10x"
     entry_fmt = "<13s2x4xii4xx"

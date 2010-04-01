@@ -5,7 +5,8 @@ import struct
 # Another pac format (.pac) as found in STRIKES' Yashin
 #
 class PAC3Archive(Archive):
-    name = "Unknown .pac (STRIKES' Yashin)"
+    name = ".pac (Yashin)"
+    desc = "STRIKES' Yashin"
     sig = "\x00\x00\x00\x00"
     header_fmt = "<i" + ("x" * (0x3FE - 4))
     entry_fmt = "<16sii"
@@ -28,7 +29,8 @@ class PAC3Archive(Archive):
 # except that filenames are 32 chars
 #
 class PAC3bArchive(Archive):
-    name = "Unknown .pac (MEs)"
+    name = ".pac (MEs)"
+    desc = "MEs"
     sig = "\x00\x00\x00\x00"
     header_fmt = "<i" + ("x" * (0x3FE - 4))
     entry_fmt = "<32sii"

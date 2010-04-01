@@ -5,7 +5,8 @@ from pygelib import Archive
 # LNK (.dat) as found in Ever17
 #
 class LNKArchive(Archive):
-    name = "LNK (Ever17)"
+    name = "LNK"
+    desc = "Ever17"
     sig = "LNK\x00"
     header_fmt = "<4si8x"
     entry_fmt = "<ii24s"

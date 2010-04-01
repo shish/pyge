@@ -9,7 +9,8 @@ import struct
 # offset is hackily hardcoded for one specific file...
 #
 class LibArchive(Archive):
-    name = "Lib (Imitation Lover)"
+    name = "Lib"
+    desc = "Imitation Lover"
     sig = "LIB"
     header_fmt = "<3sx212xi4x"
     entry_fmt = "<36sii4x"

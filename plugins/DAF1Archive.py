@@ -9,7 +9,8 @@ from pygelib import Archive
 # (length int included)
 #
 class DAF1Archive(Archive):
-    name = "DAF1 (Ayakashi)"
+    name = "DAF1"
+    desc = "Ayakashi"
     sig = "DAF1"
     # first 4x = index offset? was 0x0100 when
     # the first index entry was at 0x0100...

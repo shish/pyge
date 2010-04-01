@@ -5,7 +5,8 @@ from pygelib import Archive
 # Stuff (.stuff) as found in EVE online
 #
 class StuffArchive(Archive):
-    name = "Stuff (EVE Online)"
+    name = "Stuff"
+    desc = "EVE Online"
     header_fmt = "<i"
     entry_fmt = "<ii"
 

@@ -3,6 +3,7 @@ from pygelib import Archive
 
 class FileSystemArchive(Archive):
     name = "directory"
+    desc = "plain directory"
 
     def detect(self):
         return os.path.isdir(self.filename)

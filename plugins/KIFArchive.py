@@ -7,7 +7,8 @@ from pygelib import Archive
 # mod not tried
 #
 class KIFArchive(Archive):
-    name = "KIF (Donburi)"
+    name = "KIF"
+    desc = "Donburi"
     sig = "KIF\x00"
     header_fmt = "<4si"
     entry_fmt = "<32sii"

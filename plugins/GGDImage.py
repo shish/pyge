@@ -5,6 +5,7 @@ from pygelib import Image
 # GGD (.ggd) image -- I don't get it /o/
 #
 class GGDImage(Image):
+    name = "GGD"
     sig = "\xB9\xAA\xB3\xB3"
     header_fmt = "<4shh"
 

@@ -5,7 +5,8 @@ from pygelib import Archive
 # AcPack (.pak) as found in Discipline
 #
 class AcPackArchive(Archive):
-    name = "AcPack (Discipline)"
+    name = "AcPack"
+    desc = "Discipline"
     sig = "ACPACK32"
     header_fmt = "<8s4xi"
     entry_fmt = "<28si"

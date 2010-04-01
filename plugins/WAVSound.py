@@ -2,6 +2,7 @@ import struct
 from pygelib import Sound
 
 class WAVSound(Sound):
+    name = "WAV"
     sig = "RIFF"
     header_fmt = "<4si4s4sihhiihh4si"
 

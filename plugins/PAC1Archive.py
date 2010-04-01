@@ -4,7 +4,8 @@ from pygelib import Archive
 # Pac1 (.pac) as found in Himegoto
 #
 class PAC1Archive(Archive):
-    name = "Pac1 (Himegoto) (broken)"
+    name = "Pac1"
+    desc = "Himegoto (broken)"
     sig = "PAC1"
     header_fmt = "<4si"
     # name, something, type?, regular_size?, compressed_size?
