@@ -4,6 +4,8 @@ import struct
 import sys, os
 
 class Archive(object):
+    name = "Unnamed (BUG)"
+    desc = ""
     filename = None
     file = None
     list = {}
@@ -112,6 +114,8 @@ class Archive(object):
         self.file.write(data)
 
 class Image(object):
+    name = "Unnamed (BUG)"
+    desc = ""
     width = 0
     height = 0
     depth = 0
@@ -154,6 +158,8 @@ class Image(object):
         return data
 
 class Sound(object):
+    name = "Unnamed (BUG)"
+    desc = ""
     samples = 0
     rate = 0
     depth = 0
@@ -203,5 +209,13 @@ def load_plugins(path):
     for fname in os.listdir(path):
         if fname[-3:] == ".py":
             __import__(fname[0:-3])
-    return Archive.__subclasses__()
+    arcs = list(Archive.__subclasses__())
+    imgs = list(Image.__subclasses__())
+    snds = list(Sound.__subclasses__())
+    plugins = {}
+    for plugin in arcs + imgs + snds:
+        if plugin.name in plugins:
+            print "ERROR: duplicate plugin name: "+plugin.name
+        plugins[plugin.name] = plugin
+    return plugins
 
