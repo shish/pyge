@@ -1,5 +1,5 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # PackOnly (.pd) as found in Cross Channel
@@ -12,7 +12,7 @@ from pygelib import Archive
 # (confirmed 2006/07/10)
 # 
 #
-class PackOnlyArchive(Archive):
+class PackOnly(PygePlugin):
     name = "PackOnly"
     desc = "Cross Channel"
     sig = "PackOnly"
@@ -43,7 +43,7 @@ class PackOnlyArchive(Archive):
 # (confirmed 2006/07/10)
 # 
 #
-class PackPlusArchive(PackOnlyArchive):
+class PackPlus(PackOnly):
     name = "PackPlus"
     desc = "Cross Channel"
     sig = "PackPlus"

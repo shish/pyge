@@ -1,9 +1,9 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # yanepk (.dat) as found in Nuba (?)
 #
-class YanePKArchive(Archive):
+class YanePK(PygePlugin):
     name = "YanePK"
     desc = "Nuba, Seiken Block 2"
     sig = "yanepkEx"

@@ -1,8 +1,10 @@
 import struct
-from pygelib import Sound
+from pygelib import PygePlugin
 
-class NWASound(Sound):
+class NWA(PygePlugin):
     name = "NWA"
+    desc = ".nwa audio, from navel games"
+    type = "sound"
     sig = None
     nwa_fmt = "<hhiiiiiii"
     wav_fmt = "<4si4s4sihhiihh4si"

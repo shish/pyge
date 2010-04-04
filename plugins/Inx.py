@@ -1,10 +1,10 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # Inx (.Inx / .Snn) as found in Oppai Life
 #
-class InxArchive(Archive):
+class Inx(PygePlugin):
     name = "Inx / Snn"
     desc = "Oppai Life"
     header_fmt = "<i"
@@ -20,4 +20,4 @@ class InxArchive(Archive):
 
     def extract(self, fname, ofile=None):
         self.file = open(self.filename[0:-3] + "Snn", "rb")
-        Archive.extract(self, fname, ofile)
+        PygePlugin.extract(self, fname, ofile)

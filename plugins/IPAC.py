@@ -1,9 +1,9 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # IPAC (.pak) as found in <Something japanese...>
 #
-class IPACArchive(Archive):
+class IPAC(PygePlugin):
     name = "IPAC"
     desc = "Found in <Something japanese...>"
     sig = "IPAC"

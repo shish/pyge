@@ -1,9 +1,9 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # Pac1 (.pac) as found in Himegoto
 #
-class PAC1Archive(Archive):
+class PAC1(PygePlugin):
     name = "Pac1"
     desc = "Himegoto (broken)"
     sig = "PAC1"

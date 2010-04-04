@@ -1,10 +1,10 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # Stuff (.stuff) as found in EVE online
 #
-class StuffArchive(Archive):
+class Stuff(PygePlugin):
     name = "Stuff"
     desc = "EVE Online"
     header_fmt = "<i"

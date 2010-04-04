@@ -1,5 +1,5 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # VF (.vfs) as found in CraziesT
@@ -7,7 +7,7 @@ from pygelib import Archive
 # unpack & repack tested, binary compatible (2006/07/10)
 # no data change tested since it's all proprietary formats
 #
-class VFArchive(Archive):
+class VF(PygePlugin):
     name = "VFS"
     desc = "CraziesT"
     sig = "VF\x01\x01"

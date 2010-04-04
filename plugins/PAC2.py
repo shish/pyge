@@ -1,9 +1,9 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # Gamedat Pac2 (.dat) as found in TG (?)
 #
-class PAC2Archive(Archive):
+class PAC2(PygePlugin):
     name = "Pac2"
     desc = "TG?"
     sig = "GAMEDAT PAC2"

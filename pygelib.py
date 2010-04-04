@@ -1,11 +1,42 @@
 #!/usr/bin/python
 
+"""
+PyGE base library, various types of object that can be inherited from
+
+To add support for a new format, create a class in plugins/ which
+inherits from Archive, Image or Sound, then override the methods
+as relevant.
+
+
+All three types expose the following methods, to be used as the
+public API
+
+detect()
+    check if this plugin can handle the file
+
+print_list()
+    print a listing of contents to stdout
+
+extract(filename)
+    extract the named file; if filename is Null, extract all files
+
+create(filenames)
+    build an archive containing the named files
+
+
+New plugins can override these, or override individual parts from
+the private API:
+
+[to be documented]
+"""
+
 import struct
 import sys, os
 
-class Archive(object):
+class PygePlugin(object):
     name = "Unnamed (BUG)"
     desc = ""
+    type = "archive"
     filename = None
     file = None
     list = {}
@@ -21,29 +52,46 @@ class Archive(object):
         self.filename = filename
         self.file = file
 
-
+    # detect
     def detect(self):
+        """
+        check if this plugin can handle the file
+
+        default: return true if the first few bytes of the file == self.sig
+        """
         if self.sig == None:
             return False
         self.file.seek(0)
         head = self.file.read(len(self.sig))
         return head == self.sig
 
+    # get / print list
+    def print_list(self):
+        if self.type == "archive":
+            self._read()
+            print "%20s : %8s %8s" % ("Name", "Offset", "Length")
+            for name in self.list:
+                data = self.list[name]
+                print "%20s : %8i %8i" % (data["name"], data["start"], data["length"])
+        if self.type == "image":
+            print "File is an image"
+        if self.type == "sound":
+            print "File is a sound"
 
-    def read(self):
+    def _read(self):
         self.list = {}
         self.file.seek(0)
-        self.readheader()
-        self.readindex()
+        self._readheader()
+        self._readindex()
 
-    def readheader(self):
+    def _readheader(self):
         sig, self.count = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))
         if sig != self.sig:
             print "sig needs to be '%s'\n" % (self.sig)
             return False
 
-    def readindex(self):
+    def _readindex(self):
         for n in xrange(self.count):
             if self.entry_order == "nol":
                 namez, offset, length = struct.unpack(self.entry_fmt,
@@ -57,7 +105,22 @@ class Archive(object):
             name = namez.strip("\x00")
             self.list[name] = {"name":name, "start":offset, "length":length}
 
-    def extract(self, name, ofile=None):
+    # extraction
+    def extract(self, name=None, ofile=None):
+        if self.type == "archive":
+            self._extract_from_archive(name, ofile)
+        if self.type == "image":
+            self._extract_image(name, ofile)
+        if self.type == "sound":
+            self.extract_sound(name, ofile)
+
+    def _extract_from_archive(self, name, ofile):
+        if not self.list:
+            self._read()
+        if not name:
+            for name in self.list:
+                self._extract_from_archive(name)
+            return
         if not ofile:
             unix_name = name.replace("\\", "/")
             (dirname, filename) = os.path.split(unix_name)
@@ -77,21 +140,48 @@ class Archive(object):
         ofile.write(data)
         return len(data)
 
-
-    def create(self, filelist):
+    def _extract_image(self, name=None, oname=None):
+        if not name:
+            name = self.filename
+        if not oname:
+            oname = name+".png"
         self.file.seek(0)
-        self.writeheader(filelist)
-        self.writeindex(filelist)
+        data = self.file.read()
+        if(self.decrypt):
+            data = self.decrypt(data)
+        file(self.filename+".png", "wb").write(data)
 
-        for n in filelist:
-            fp = open(n, 'rb')
-            self.append(n, fp)
-            fp.close()
+    def _extract_sound(self, name=None, oname=None):
+        if not name:
+            name = self.filename
+        if not oname:
+            oname = name+".wav"
+        self.file.seek(0)
+        data = self.file.read()
+        if(self.decrypt):
+            data = self.decrypt(data)
+        file(self.filename+".wav", "wb").write(data)
 
-    def writeheader(self, filelist):
+    # creations
+    def create(self, filelist):
+        if self.type == "archive":
+            self.file.seek(0)
+            self._writeheader(filelist)
+            self._writeindex(filelist)
+
+            for n in filelist:
+                fp = open(n, 'rb')
+                self._append(n, fp)
+                fp.close()
+        if self.type == "image":
+            self._create_image(filelist)
+        if self.type == "sound":
+            self._create_sound(filelist)
+
+    def _writeheader(self, filelist):
         self.file.write(struct.pack(self.header_fmt, self.sig, len(filelist)))
 
-    def writeindex(self, filelist):
+    def _writeindex(self, filelist):
         offset = struct.calcsize(self.header_fmt) + struct.calcsize(self.entry_fmt) * len(filelist)
 
         print "writing index"
@@ -106,114 +196,34 @@ class Archive(object):
                 self.file.write(struct.pack(self.entry_fmt, offset, length, name))
             offset = offset + length
 
-    def append(self, name, ifile):
+    def _append(self, name, ifile):
         print "appending %s" % (name)
         data = ifile.read()
         if(self.encrypt):
             data = self.encrypt(data)
         self.file.write(data)
 
-class Image(object):
-    name = "Unnamed (BUG)"
-    desc = ""
-    width = 0
-    height = 0
-    depth = 0
-    filename = None
-    file = None
-    sig = None
-    header_fmt = "4shhh"
-    encrypt = None
-    decrypt = None
+    def _create_image(self, filenames):
+        for fn in filenames:
+            data = file(fn).read()
+            if(self.encrypt):
+                data = self.encrypt(data)
+            file(self.filename, "wb").write(data)
 
-    def __init__(self, filename, file):
-        self.filename = filename
-        self.file = file
-
-
-    def detect(self):
-        if self.sig == None:
-            return False
-        self.file.seek(0)
-        head = self.file.read(len(self.sig))
-        return head == self.sig
-
-    def read(self):
-        self.file.seek(0)
-        self.readheader()
-
-    def readheader(self):
-        sig, self.width, self.height, self.depth = struct.unpack(self.header_fmt,
-                self.file.read(struct.calcsize(self.header_fmt)))
-        if sig != self.sig:
-            print "sig needs to be '%s'\n" % (self.sig)
-            return False
-
-    def getBmp(self):
-        print "reading %s to buffer" % (self.filename)
-        self.file.seek(0)
-        data = self.file.read()
-        if(self.decrypt):
-            data = self.decrypt(data)
-        return data
-
-class Sound(object):
-    name = "Unnamed (BUG)"
-    desc = ""
-    samples = 0
-    rate = 0
-    depth = 0
-    filename = None
-    file = None
-    sig = None
-    header_fmt = "4s"
-    encrypt = None
-    decrypt = None
-
-    def __init__(self, filename, file):
-        self.filename = filename
-        self.contentname = self.filename + ".wav"
-        self.file = file
-
-
-    def detect(self):
-        if self.sig == None:
-            return False
-        self.file.seek(0)
-        head = self.file.read(len(self.sig))
-        return head == self.sig
-
-
-    def read(self):
-        self.file.seek(0)
-        self.readheader()
-
-    def readheader(self):
-        sig, = struct.unpack(self.header_fmt,
-                self.file.read(struct.calcsize(self.header_fmt)))
-        if sig != self.sig:
-            print "sig needs to be '%s'\n" % (self.sig)
-            return False
-
-    def getWav(self):
-        print "reading %s to buffer" % (self.filename)
-        self.file.seek(0)
-        data = self.file.read()
-        if(self.decrypt):
-            data = self.decrypt(data)
-        return data
-
+    def _create_sound(self, filenames):
+        for fn in filenames:
+            data = file(fn).read()
+            if(self.encrypt):
+                data = self.encrypt(data)
+            file(self.filename, "wb").write(data)
 
 def load_plugins(path):
     sys.path.append(path)
     for fname in os.listdir(path):
         if fname[-3:] == ".py":
             __import__(fname[0:-3])
-    arcs = list(Archive.__subclasses__())
-    imgs = list(Image.__subclasses__())
-    snds = list(Sound.__subclasses__())
     plugins = {}
-    for plugin in arcs + imgs + snds:
+    for plugin in list(PygePlugin.__subclasses__()):
         if plugin.name in plugins:
             print "ERROR: duplicate plugin name: "+plugin.name
         plugins[plugin.name] = plugin

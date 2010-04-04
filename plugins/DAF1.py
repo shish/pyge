@@ -1,5 +1,5 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # DAF1 (.dat) reader, as found in Ayakashi
@@ -8,7 +8,7 @@ from pygelib import Archive
 # lengths -- each entry is prefixed with an int specifying it's length
 # (length int included)
 #
-class DAF1Archive(Archive):
+class DAF1(PygePlugin):
     name = "DAF1"
     desc = "Ayakashi"
     sig = "DAF1"

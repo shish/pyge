@@ -45,10 +45,10 @@ def main():
         if options.format:
             archive = plugins[options.format](options.filename, fp)
         else:
-            for plugin in plugins:
-                if plugin(options.filename, fp).detect():
-                    print "Detected format: %s" % (plugin.name)
-                    archive = plugin(options.filename, fp)
+            for name in plugins:
+                if plugins[name](options.filename, fp).detect():
+                    print "Detected format: %s" % (plugins[name].name)
+                    archive = plugins[name](options.filename, fp)
                     break
 
     if archive == None:
@@ -59,20 +59,14 @@ def main():
         archive.create(args)
 
     if options.do_list:
-        archive.read()
-        print "%20s : %8s %8s" % ("Name", "Offset", "Length")
-        for name in archive.list:
-            data = archive.list[name]
-            print "%20s : %8i %8i" % (data["name"], data["start"], data["length"])
+        archive.print_list()
 
     if options.do_extract:
-        archive.read()
         if args:
             for name in args:
                 archive.extract(name)
         else:
-            for name in archive.list:
-                archive.extract(name)
+            archive.extract()
 
 if __name__ == "__main__":
     main()

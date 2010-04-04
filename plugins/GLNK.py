@@ -1,10 +1,10 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 import struct
 
 #
 # GLNK (.gl) as found in Present for You
 #
-class GLNKArchive(Archive):
+class GLNK(PygePlugin):
     name = "GLNK"
     desc = "Present for You"
     sig = "GLNK"

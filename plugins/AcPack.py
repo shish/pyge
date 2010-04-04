@@ -1,10 +1,10 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # AcPack (.pak) as found in Discipline
 #
-class AcPackArchive(Archive):
+class AcPack(PygePlugin):
     name = "AcPack"
     desc = "Discipline"
     sig = "ACPACK32"

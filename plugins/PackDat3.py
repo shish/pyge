@@ -1,9 +1,9 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # PackDat3 (.cab) as found in Onnakayo
 #
-class PackDat3Archive(Archive):
+class PackDat3(PygePlugin):
     name = "PackDat3"
     desc = "Onnakayo"
     sig = "PackDat3"

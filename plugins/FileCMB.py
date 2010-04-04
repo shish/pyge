@@ -1,11 +1,11 @@
 import struct
 import re
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # FileCMB (.dat) as found in Roommate
 #
-class FileCMBArchive(Archive):
+class FileCMB(PygePlugin):
     name = "FileCMB"
     desc = "Roommate"
     sig = "FILECMB-DATA-LIST-IN\x0A"

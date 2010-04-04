@@ -1,4 +1,4 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # KIF (.int) as found in Donburi
@@ -6,7 +6,7 @@ from pygelib import Archive
 # unpack and repack work, no crash (2006/07/10)
 # mod not tried
 #
-class KIFArchive(Archive):
+class KIF(PygePlugin):
     name = "KIF"
     desc = "Donburi"
     sig = "KIF\x00"

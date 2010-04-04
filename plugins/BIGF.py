@@ -1,12 +1,12 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # bigf (.big) as found in SSX3
 #
 # broken (count, start and length don't work...)
 #
-class BIGFArchive(Archive):
+class BIGF(PygePlugin):
     name = "BigF"
     desc = "SSX3"
     sig = "BIGF"

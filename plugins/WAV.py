@@ -1,8 +1,13 @@
 import struct
-from pygelib import Sound
+from pygelib import PygePlugin
 
-class WAVSound(Sound):
+#
+# Plain .wav file, for testing
+#
+class WAV(PygePlugin):
     name = "WAV"
+    desc = "plain .wav sound"
+    type = "sound"
     sig = "RIFF"
     header_fmt = "<4si4s4sihhiihh4si"
 

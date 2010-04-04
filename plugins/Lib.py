@@ -1,4 +1,4 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 import struct
 
 #
@@ -8,7 +8,7 @@ import struct
 # reads file entries, but not diretory entries, and the file entry
 # offset is hackily hardcoded for one specific file...
 #
-class LibArchive(Archive):
+class Lib(PygePlugin):
     name = "Lib"
     desc = "Imitation Lover"
     sig = "LIB"

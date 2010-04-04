@@ -1,9 +1,9 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # sm2 (no ext) as found in Crescendo
 #
-class SM2MPXArchive(Archive):
+class SM2MPX(PygePlugin):
     name = "SM2"
     desc = "Crescendo"
     sig = "SM2MPX10"

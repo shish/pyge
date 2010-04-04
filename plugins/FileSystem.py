@@ -1,7 +1,7 @@
 import os, os.path
-from pygelib import Archive
+from pygelib import PygePlugin
 
-class FileSystemArchive(Archive):
+class FileSystem(PygePlugin):
     name = "directory"
     desc = "plain directory"
 

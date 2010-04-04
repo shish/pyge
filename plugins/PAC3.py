@@ -1,10 +1,10 @@
-from pygelib import Archive
+from pygelib import PygePlugin
 import struct
 
 #
 # Another pac format (.pac) as found in STRIKES' Yashin
 #
-class PAC3Archive(Archive):
+class PAC3(PygePlugin):
     name = ".pac (Yashin)"
     desc = "STRIKES' Yashin"
     sig = "\x00\x00\x00\x00"
@@ -28,7 +28,7 @@ class PAC3Archive(Archive):
 # Another pac format (.pac) as found in MEs, same as PAC3
 # except that filenames are 32 chars
 #
-class PAC3bArchive(Archive):
+class PAC3b(PygePlugin):
     name = ".pac (MEs)"
     desc = "MEs"
     sig = "\x00\x00\x00\x00"

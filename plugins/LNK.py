@@ -1,10 +1,10 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # LNK (.dat) as found in Ever17
 #
-class LNKArchive(Archive):
+class LNK(PygePlugin):
     name = "LNK"
     desc = "Ever17"
     sig = "LNK\x00"

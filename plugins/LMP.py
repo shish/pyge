@@ -1,5 +1,5 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # LMP (.lmp) archives, as found in The Bard's Tale
@@ -8,7 +8,7 @@ from pygelib import Archive
 # No writer code (yet)
 # Writer untestable -- comes from read only media (PS2 game)
 #
-class LMPArchive(Archive):
+class LMP(PygePlugin):
     name = "LMP"
     desc = "The Bard's Tale"
     sig = ""

@@ -1,10 +1,10 @@
 import struct
-from pygelib import Archive
+from pygelib import PygePlugin
 
 #
 # FPK (.dat) as found in IOR and MNR
 #
-class FPKArchive(Archive):
+class FPK(PygePlugin):
     name = "FPK"
     desc = "(IOR, MNR) (broken)"
     sig = "FPK\x000100"
