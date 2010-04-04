@@ -37,7 +37,7 @@ class ListPanel(wx.Panel):
             self.list.SetStringItem(index, 1, str(data["length"]/1024)+" KB")
             self.list.SetItemData(index, n)
             n = n + 1
-            
+
         self.mainframe.status.SetStatusText("Ready", 0)
 
     def onExtract(self, evt):
@@ -112,7 +112,7 @@ class MyFrame(wx.Frame):
         self.status.SetStatusWidths([-3, -1])
         self.status.SetStatusText("Ready", 0)
         self.SetStatusBar(self.status)
-        
+
         # Now create the Panel to put the other controls on.
         panel = wx.Panel(self)
         self.lpanel = ListPanel(panel, self)
