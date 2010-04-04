@@ -11,7 +11,7 @@ class LNK(PygePlugin):
     header_fmt = "<4si8x"
     entry_fmt = "<ii24s"
 
-    def readindex(self):
+    def _readindex(self):
         offs = struct.calcsize(self.header_fmt) + struct.calcsize(self.entry_fmt) * self.count
         for n in xrange(self.count):
             start, length, namez = struct.unpack(self.entry_fmt,
@@ -19,7 +19,7 @@ class LNK(PygePlugin):
             name = namez.strip("\x00")
             self.list[name] = name, start + offs, length
 
-    def writeindex(self, filelist):
+    def _writeindex(self, filelist):
         start = 0
         for n in filelist:
             name = n

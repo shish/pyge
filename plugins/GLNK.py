@@ -11,7 +11,7 @@ class GLNK(PygePlugin):
     header_fmt = "<4sxxi"
     entry_fmt = "<iiB"
 
-    def readindex(self):
+    def _readindex(self):
         for n in xrange(self.count):
             length, blah, namelen = struct.unpack(self.entry_fmt, self.file.read(9))
             name = self.file.read(namelen)

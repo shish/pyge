@@ -8,7 +8,7 @@ class FileSystem(PygePlugin):
     def detect(self):
         return os.path.isdir(self.filename)
 
-    def read(self):
+    def _read(self):
         self.list = {}
         #for n in os.listdir(self.filename):
         #    self.list[n] = fpath, 0, os.stat(n).st_size

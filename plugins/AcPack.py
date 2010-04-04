@@ -11,7 +11,7 @@ class AcPack(PygePlugin):
     header_fmt = "<8s4xi"
     entry_fmt = "<28si"
 
-    def readindex(self):
+    def _readindex(self):
         prev = None
         for n in xrange(self.count):
             namez, start = struct.unpack(self.entry_fmt,

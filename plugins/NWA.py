@@ -12,7 +12,7 @@ class NWA(PygePlugin):
     def detect(self):
         return self.filename[-4:] == ".nwa"
 
-    def read(self):
+    def _read(self):
         self.file.seek(0)
         (self.channels, self.depth, self.rate, u1, u2, u3, data_size, u4, self.samples) = \
                 struct.unpack(self.nwa_fmt, self.file.read(struct.calcsize(self.nwa_fmt)))

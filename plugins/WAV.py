@@ -11,7 +11,7 @@ class WAV(PygePlugin):
     sig = "RIFF"
     header_fmt = "<4si4s4sihhiihh4si"
 
-    def read(self):
+    def _read(self):
         self.file.seek(0)
         (j_riff, self.samples, j_wave, j_fmt, j_16, j_1, self.channels,
                 self.rate, j_byps, j_block_size, self.depth, j_data, j_data_size) = \

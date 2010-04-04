@@ -11,7 +11,7 @@ class GGD(PygePlugin):
     sig = "\xB9\xAA\xB3\xB3"
     header_fmt = "<4shh"
 
-    def readheader(self):
+    def _readheader(self):
         sig, self.width, self.height = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))
         self.depth = 32

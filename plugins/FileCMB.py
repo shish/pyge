@@ -12,7 +12,7 @@ class FileCMB(PygePlugin):
     header_fmt = "<21s"
     entry_fmt = "<ii24s"
 
-    def readheader(self):
+    def _readheader(self):
         sig, = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))
         if sig != self.sig:
@@ -20,7 +20,7 @@ class FileCMB(PygePlugin):
             return False
         self.count = 0
 
-    def readindex(self):
+    def _readindex(self):
         line = ""
         while True:
             line = self.file.readline()

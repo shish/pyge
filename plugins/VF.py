@@ -16,7 +16,7 @@ class VF(PygePlugin):
 
     # FIXME: contains voodoo
     # FIXME: depends on filelist being real files
-    def writeheader(self, filelist):
+    def _writeheader(self, filelist):
         idxsize = len(filelist) * struct.calcsize(self.entry_fmt)
         fsize = struct.calcsize(self.header_fmt) + idxsize
         for n in filelist:
@@ -24,7 +24,7 @@ class VF(PygePlugin):
         self.file.write(struct.pack("<4sh2sii", self.sig, len(filelist),
                                     "\x20\x00", idxsize, fsize))
 
-    def writeindex(self, filelist):
+    def _writeindex(self, filelist):
         start = struct.calcsize(self.header_fmt) + struct.calcsize(self.entry_fmt) * len(filelist)
 
         for n in filelist:

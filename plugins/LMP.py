@@ -5,8 +5,8 @@ from pygelib import PygePlugin
 # LMP (.lmp) archives, as found in The Bard's Tale
 #
 # No signature
-# No writer code (yet)
-# Writer untestable -- comes from read only media (PS2 game)
+# No _writer code (yet)
+# Writer untestable -- comes from _read only media (PS2 game)
 #
 class LMP(PygePlugin):
     name = "LMP"
@@ -19,6 +19,6 @@ class LMP(PygePlugin):
     def detect(self):
         return self.filename.endswith(".LMP")
 
-    def readheader(self):
+    def _readheader(self):
         (self.count, ) = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))

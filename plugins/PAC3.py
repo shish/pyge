@@ -19,7 +19,7 @@ class PAC3(PygePlugin):
         self.file.seek(0x42E) ; t4 = self.file.read(1).isalnum()
         return (self.filename[-3:] == "pac") and t1 and t2 and t3 and t4
 
-    def readheader(self):
+    def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))[0]
 
@@ -43,7 +43,7 @@ class PAC3b(PygePlugin):
         self.file.seek(0x42E) ; t4 = self.file.read(1).isalnum()
         return (self.filename[-3:] == "pac") and t1 and t2 and t3 and t4
 
-    def readheader(self):
+    def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))[0]
 

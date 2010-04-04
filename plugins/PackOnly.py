@@ -19,7 +19,7 @@ class PackOnly(PygePlugin):
     header_fmt = "<8s56xQ"
     entry_fmt = "<128sQQ"
 
-    def writeindex(self, filelist):
+    def _writeindex(self, filelist):
         start = 64 + 8 + 144 * 16384
 
         for n in filelist:

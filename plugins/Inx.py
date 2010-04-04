@@ -13,7 +13,7 @@ class Inx(PygePlugin):
     def detect(self):
         return (self.filename[-3:] == "Inx")
 
-    def readheader(self):
+    def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))[0]
 

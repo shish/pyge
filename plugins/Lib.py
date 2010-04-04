@@ -4,8 +4,8 @@ import struct
 #
 # LIB (.lib) as found in Imitation Lover
 # 
-# this format contains a directory structure; the reader currently
-# reads file entries, but not diretory entries, and the file entry
+# this format contains a directory structure; the _reader currently
+# _reads file entries, but not diretory entries, and the file entry
 # offset is hackily hardcoded for one specific file...
 #
 class Lib(PygePlugin):
@@ -16,7 +16,7 @@ class Lib(PygePlugin):
     entry_fmt = "<36sii4x"
     entry_order = "nlo"
 
-    def readindex(self):
+    def _readindex(self):
         for n in xrange(self.count):
             namez, length, offset = struct.unpack(self.entry_fmt, self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\00")

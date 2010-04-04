@@ -13,11 +13,11 @@ class Stuff(PygePlugin):
     def detect(self):
         return (self.filename[-5:] == "stuff")
 
-    def readheader(self):
+    def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))[0]
 
-    def readindex(self):
+    def _readindex(self):
         offset = 0
         for n in xrange(self.count):
             length, maybe_flags = struct.unpack(self.entry_fmt,

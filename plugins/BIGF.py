@@ -13,7 +13,7 @@ class BIGF(PygePlugin):
     header_fmt = "<4s4x4xi"
     entry_fmt = "<ii14s"
 
-    def readindex(self):
+    def _readindex(self):
         print "count"
         self.count = 10
         for n in xrange(self.count):
