@@ -114,7 +114,7 @@ class PygePlugin(object):
         if self.type == "sound":
             self.extract_sound(name, ofile)
 
-    def _extract_from_archive(self, name, ofile):
+    def _extract_from_archive(self, name=None, ofile=None):
         if not self.list:
             self._read()
         if not name:
