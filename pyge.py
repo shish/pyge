@@ -43,7 +43,10 @@ def main():
     else:
         fp = open(options.filename, 'rb+')
         if options.format:
-            archive = plugins[options.format](options.filename, fp)
+            if options.format in plugins:
+                archive = plugins[options.format](options.filename, fp)
+            else:
+                archive = None
         else:
             for name in plugins:
                 if plugins[name](options.filename, fp).detect():
