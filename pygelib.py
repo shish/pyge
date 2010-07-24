@@ -4,12 +4,10 @@
 PyGE base library, various types of object that can be inherited from
 
 To add support for a new format, create a class in plugins/ which
-inherits from Archive, Image or Sound, then override the methods
-as relevant.
+inherits from PygePlugin, then override the methods as relevant.
 
 
-All three types expose the following methods, to be used as the
-public API
+The following methods are exposed, to be used as the public API:
 
 detect()
     check if this plugin can handle the file
