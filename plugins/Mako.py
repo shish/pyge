@@ -7,7 +7,7 @@ import struct
 class Mako(PygePlugin):
     name = "Mako"
     desc = "Time Stripper Mako-chan"
-    sig = ""
+    sig = None
     header_fmt = "<h"
     entry_fmt = "<12si"
 
