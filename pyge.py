@@ -7,7 +7,7 @@ from optparse import OptionParser
 import pygelib
 
 def main():
-    plugins = pygelib.load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
+    plugins = pygelib.load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "archive"))
 
     parser = OptionParser()
     parser.add_option("-f", "--file", dest="filename",
