@@ -6,7 +6,7 @@ from pygelib import PygePlugin
 class VVV(PygePlugin):
     name = "VVV"
     desc = "VVV (VVVVVV)"
-    sig = ""
+    sig = None
     header_fmt = "<0s"
     # name, something, type?, regular_size?, compressed_size?
     # regular_size? = compressed_size? for all known files
