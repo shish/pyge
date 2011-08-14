@@ -1,5 +1,5 @@
 import struct
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
 #
 # VF (.vfs) as found in CraziesT
@@ -7,10 +7,11 @@ from pygelib import PygePlugin
 # unpack & repack tested, binary compatible (2006/07/10)
 # no data change tested since it's all proprietary formats
 #
-class VF(PygePlugin):
+class VF(PygeArchive):
     name = "VFS"
     desc = "CraziesT"
     sig = "VF\x01\x01"
+    ext = "vfs"
     header_fmt = "<4sh10x"
     entry_fmt = "<13s2x4xii4xx"
 
@@ -33,4 +34,3 @@ class VF(PygePlugin):
             # 0 = compression, length#2 = compressed size?
             self.file.write(struct.pack("<13s2siiiix", name, "\x20\x00", 0, start, length, length))
             start = start + length
-

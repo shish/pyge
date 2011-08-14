@@ -1,5 +1,5 @@
 import struct
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
 #
 # PackOnly (.pd) as found in Cross Channel
@@ -12,10 +12,11 @@ from pygelib import PygePlugin
 # (confirmed 2006/07/10)
 # 
 #
-class PackOnly(PygePlugin):
+class PackOnly(PygeArchive):
     name = "PackOnly"
     desc = "Cross Channel"
     sig = "PackOnly"
+    ext = "pd"
     header_fmt = "<8s56xQ"
     entry_fmt = "<128sQQ"
 
@@ -47,6 +48,7 @@ class PackPlus(PackOnly):
     name = "PackPlus"
     desc = "Cross Channel"
     sig = "PackPlus"
+    ext = "pd"
 
     def xorit(self, data):
         arr = array('B', data)
@@ -56,4 +58,3 @@ class PackPlus(PackOnly):
 
     decrypt = xorit
     encrypt = xorit
-

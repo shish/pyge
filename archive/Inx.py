@@ -1,17 +1,15 @@
 import struct
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
 #
 # Inx (.Inx / .Snn) as found in Oppai Life
 #
-class Inx(PygePlugin):
+class Inx(PygeArchive):
     name = "Inx / Snn"
     desc = "Oppai Life"
+    ext = "inx"
     header_fmt = "<i"
     entry_fmt = "<64sii"
-
-    def detect(self):
-        return (self.filename[-3:] == "Inx")
 
     def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
@@ -20,4 +18,4 @@ class Inx(PygePlugin):
 
     def extract(self, fname, ofile=None):
         self.file = open(self.filename[0:-3] + "Snn", "rb")
-        PygePlugin.extract(self, fname, ofile)
+        PygeArchive.extract(self, fname, ofile)

@@ -1,17 +1,16 @@
 import struct
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
 #
 # Stuff (.stuff) as found in EVE online
 #
-class Stuff(PygePlugin):
+class Stuff(PygeArchive):
     name = "Stuff"
     desc = "EVE Online"
+    sig = None
+    ext = "stuff"
     header_fmt = "<i"
     entry_fmt = "<ii"
-
-    def detect(self):
-        return (self.filename[-5:] == "stuff")
 
     def _readheader(self):
         self.count = struct.unpack(self.header_fmt,

@@ -1,10 +1,10 @@
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 import struct
 
 #
 # no sig or extension as found in Time Stripper Mako-chan
 #
-class Mako(PygePlugin):
+class Mako(PygeArchive):
     name = "Mako"
     desc = "Time Stripper Mako-chan"
     sig = None
@@ -17,15 +17,12 @@ class Mako(PygePlugin):
         self.count = (self.header_len - 2) / struct.calcsize(self.entry_fmt)
 
     def _readindex(self):
-        prev = None
         for n in xrange(self.count):
             name, offset = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))
             name = name.strip("\0")
-            self.list[name] = {"name":name, "start":offset, "length":0}
-            if prev:
-                self.list[prev]["length"] = offset - self.list[prev]["start"]
-            prev = name
+            self.list.append(GenericEntry(self, name, offset, 0))
+            if n > 0:
+                self.list[n-1]._length = offset - self.list[n-1]._offset
         self.file.seek(0, 2)
-        self.list[prev]["length"] = self.file.tell() - self.list[prev]["start"]
-
+        self.list[n-1]._length = self.file.tell() - self.list[n-1]._offset

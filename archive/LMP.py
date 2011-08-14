@@ -1,5 +1,5 @@
 import struct
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
 #
 # LMP (.lmp) archives, as found in The Bard's Tale
@@ -8,16 +8,13 @@ from pygelib import PygePlugin
 # No _writer code (yet)
 # Writer untestable -- comes from _read only media (PS2 game)
 #
-class LMP(PygePlugin):
+class LMP(PygeArchive):
     name = "LMP"
     desc = "The Bard's Tale"
-    sig = ""
+    ext = "lmp"
     header_fmt = "<i"
     entry_fmt = "<56sii"
     entry_order = "nol"
-
-    def detect(self):
-        return self.filename.endswith(".LMP")
 
     def _readheader(self):
         (self.count, ) = struct.unpack(self.header_fmt,

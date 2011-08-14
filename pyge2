@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+import sys
+from optparse import OptionParser
+
+def main(argv):
+    parser = OptionParser()
+    parser.add_option("-f", "--file", dest="filename",
+            help="file (archive) to operate on", metavar="FILE")
+    parser.add_option("-x", "--extract",
+            action="store_true", dest="do_extract", default=False,
+            help="extract files")
+    parser.add_option("-l", "--list",
+            action="store_true", dest="do_list", default=False,
+            help="list archive contents")
+    parser.add_option("-c", "--create",
+            action="store_true", dest="do_create", default=False,
+            help="create new archive")
+    parser.add_option("-F", "--format", dest="format",
+            help="archive format", metavar="FMT")
+    parser.add_option("-L", "--format-list",
+            action="store_true", dest="do_format_list", default=False,
+            help="list known formats")
+    (options, args) = parser.parse_args()
+
+    from archive.VVV import VVV
+    plugins = {"VVV": VVV}
+
+    if options.do_format_list:
+        for name in plugins:
+            print "%15s: %s" % (plugins[name].name, plugins[name].desc)
+        return 0
+
+    if options.filename == None:
+        print "Filename not specified"
+        return
+    else:
+        fp = open(options.filename, 'rb+')
+        if options.format:
+            if options.format in plugins:
+                archive = plugins[options.format](fp)
+            else:
+                archive = None
+        else:
+            for name in plugins:
+                # FIXME: pick highest scoring
+                if plugins[name](fp).detect() > 0:
+                    print "Detected format: %s" % (plugins[name].name)
+                    archive = plugins[name](fp)
+                    break
+
+    if archive == None:
+        print "Unknown format"
+        return
+
+    #archive = VVV(file(options.filename))
+    #print archive.detect()
+    for entry in archive.get_file_list():
+        print entry
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

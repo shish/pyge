@@ -1,7 +1,7 @@
 import os, os.path
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
-class FileSystem(PygePlugin):
+class FileSystem(PygeArchive):
     name = "directory"
     desc = "plain directory"
 
@@ -36,4 +36,3 @@ class FileSystem(PygePlugin):
         ofile.write(ifile.read(os.stat(filename).st_size))
         ofile.close()
         ifile.close()
-

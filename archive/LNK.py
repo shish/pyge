@@ -1,13 +1,14 @@
 import struct
-from pygelib import PygePlugin
+from archive import PygeArchive, GenericEntry
 
 #
 # LNK (.dat) as found in Ever17
 #
-class LNK(PygePlugin):
+class LNK(PygeArchive):
     name = "LNK"
     desc = "Ever17"
     sig = "LNK\x00"
+    ext = "dat"
     header_fmt = "<4si8x"
     entry_fmt = "<ii24s"
 
@@ -17,7 +18,7 @@ class LNK(PygePlugin):
             start, length, namez = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
-            self.list[name] = name, start + offs, length
+            self.list.append(GenericEntry(self, name, start + offs, length))
 
     def _writeindex(self, filelist):
         start = 0
@@ -26,5 +27,3 @@ class LNK(PygePlugin):
             length = os.stat(n).st_size
             self.file.write(struct.pack(self.entry_fmt, start, length, name))
             start = start + length
-
-
