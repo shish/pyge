@@ -67,13 +67,13 @@ class PygePlugin(object):
     def print_list(self):
         if self.type == "archive":
             self._read()
-            print "%40s : %12s %12s" % ("Name", "Offset", "Length")
+            print "%50s : %12s %12s" % ("Name", "Offset", "Length")
             tlen = 0
             for name in self.list:
                 data = self.list[name]
                 tlen = tlen + data["length"]
-                print "%40s : %12i %12i" % (data["name"], data["start"], data["length"])
-            print "%40s : %12i %12i" % ("", 0, tlen)
+                print "%50s : %12i %12i" % (data["name"], data["start"], data["length"])
+            #print "%50s : %12i %12i" % ("", 0, tlen)
         if self.type == "image":
             print "File is an image"
         if self.type == "sound":
