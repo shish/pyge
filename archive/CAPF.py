@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # CAPF (.pac) as seen in Navel games (Shuffle, Tick Tack, Soul Link, etc)
 #

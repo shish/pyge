@@ -1,5 +1,6 @@
 from archive import PygeArchive, GenericEntry
 
+
 #
 # sm2 (no ext) as found in Crescendo
 #

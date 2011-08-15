@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # VF (.vfs) as found in CraziesT
 #
@@ -26,11 +27,14 @@ class VF(PygeArchive):
                                     "\x20\x00", idxsize, fsize))
 
     def _writeindex(self, filelist):
-        start = struct.calcsize(self.header_fmt) + struct.calcsize(self.entry_fmt) * len(filelist)
+        start = self._data_offset(len(filelist))
 
         for n in filelist:
             name = n
             length = os.stat(n).st_size
             # 0 = compression, length#2 = compressed size?
-            self.file.write(struct.pack("<13s2siiiix", name, "\x20\x00", 0, start, length, length))
+            self.file.write(struct.pack(
+                "<13s2siiiix",
+                name, "\x20\x00", 0, start, length, length
+            ))
             start = start + length

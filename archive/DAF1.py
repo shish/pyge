@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # DAF1 (.dat) _reader, as found in Ayakashi
 #
@@ -15,12 +16,15 @@ class DAF1(PygeArchive):
     ext = "dat"
     # first 4x = index offset? was 0x0100 when
     # the first index entry was at 0x0100...
-    header_fmt = "<4s4xi4x240x" # 240x = padding to 0x0100
+    header_fmt = "<4s4xi4x240x"  # 240x = padding to 0x0100
     entry_fmt = "<iii4x4x4x"
 
     def _readindex(self):
         for n in xrange(self.count):
-            entrylen, start, length = struct.unpack(self.entry_fmt, self.file.read(24))
+            entrylen, start, length = struct.unpack(
+                self.entry_fmt,
+                self.file.read(24)
+            )
             namelen = entrylen - 24
             namez = self.file.read(namelen)
             name = namez.strip("\x00")

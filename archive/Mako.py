@@ -1,6 +1,7 @@
 from archive import PygeArchive, GenericEntry
 import struct
 
+
 #
 # no sig or extension as found in Time Stripper Mako-chan
 #
@@ -23,6 +24,6 @@ class Mako(PygeArchive):
             name = name.strip("\0")
             self.list.append(GenericEntry(self, name, offset, 0))
             if n > 0:
-                self.list[n-1]._length = offset - self.list[n-1]._offset
+                self.list[n - 1]._length = offset - self.list[n - 1]._offset
         self.file.seek(0, 2)
-        self.list[n-1]._length = self.file.tell() - self.list[n-1]._offset
+        self.list[n - 1]._length = self.file.tell() - self.list[n - 1]._offset

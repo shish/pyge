@@ -1,5 +1,6 @@
 from archive import PygeArchive, GenericEntry
 
+
 #
 # VVV (.vvv) as found in VVVVVV
 #
@@ -8,7 +9,7 @@ class VVV(PygeArchive):
     desc = "VVV (VVVVVV)"
     sig = None
     ext = "vvv"
-    entry_fmt = "<48siii" # 60
+    entry_fmt = "<48siii"  # 60
 
     def _readheader(self):
         self.count = 15

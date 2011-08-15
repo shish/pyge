@@ -1,5 +1,6 @@
 from archive import PygeArchive, GenericEntry
 
+
 #
 # Pac1 (.pac) as found in Himegoto
 #

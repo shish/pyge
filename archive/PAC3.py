@@ -1,6 +1,7 @@
 from archive import PygeArchive, GenericEntry
 import struct
 
+
 #
 # Another pac format (.pac) as found in STRIKES' Yashin
 #

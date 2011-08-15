@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # bigf (.big) as found in SSX3
 #

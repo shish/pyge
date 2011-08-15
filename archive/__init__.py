@@ -30,7 +30,9 @@ class GenericEntry(PygeEntry):
         return self.archive.file.read(self._length)
 
     def __str__(self):
-        return "<GenericEntry %s (%d:+%d)>" % (self.name, self._offset, self._length)
+        return "<GenericEntry %s (%d:+%d)>" % (
+            self.name, self._offset, self._length
+        )
 
 
 class PygeArchive(object):
@@ -43,13 +45,15 @@ class PygeArchive(object):
     entry_order = "nol"
     encrypt = None
     decrypt = None
+    count = 0
 
     def __init__(self, file):
         self.file = file
 
     def detect(self):
         """
-        returns a number representing how likely it is that this plugin can handle the file
+        returns a number representing how likely it is that this
+        plugin can handle the file
 
         possibly like this:
         - 0 definite no
@@ -99,3 +103,8 @@ class PygeArchive(object):
                     self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
             self.list.append(GenericEntry(self, name, offset, length))
+
+    def _data_start(self, count=None):
+        header_size = struct.calcsize(self.header_fmt)
+        entry_size = struct.calcsize(self.entry_fmt)
+        return header_size + entry_size * (count or self.count)

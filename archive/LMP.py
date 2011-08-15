@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # LMP (.lmp) archives, as found in The Bard's Tale
 #

@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # AcPack (.pak) as found in Discipline
 #
@@ -18,6 +19,6 @@ class AcPack(PygeArchive):
                     self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
             if n > 0:
-                self.list[n-1]._length = start - self.list[n-1]._offset
+                self.list[n - 1]._length = start - self.list[n - 1]._offset
             if len(name) > 0:
                 self.list.append(GenericEntry(self, name, start, 0))

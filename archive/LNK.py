@@ -1,6 +1,7 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # LNK (.dat) as found in Ever17
 #
@@ -13,7 +14,7 @@ class LNK(PygeArchive):
     entry_fmt = "<ii24s"
 
     def _readindex(self):
-        offs = struct.calcsize(self.header_fmt) + struct.calcsize(self.entry_fmt) * self.count
+        offs = self._data_offset()
         for n in xrange(self.count):
             start, length, namez = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))

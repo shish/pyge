@@ -1,5 +1,7 @@
-import os, os.path
+import os
+import os.path
 from archive import PygeArchive, GenericEntry
+
 
 class FileSystem(PygeArchive):
     name = "directory"
@@ -16,7 +18,11 @@ class FileSystem(PygeArchive):
             for n in files:
                 fpath = os.path.normpath(os.path.join(root, n))
                 if os.path.isfile(fpath):
-                    self.list[fpath] = {"name":fpath, "start":0, "length":os.stat(fpath).st_size}
+                    self.list[fpath] = {
+                        "name": fpath,
+                        "start": 0,
+                        "length": os.stat(fpath).st_size
+                    }
         return True
 
     def create(self, filelist):

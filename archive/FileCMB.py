@@ -2,6 +2,7 @@ import struct
 import re
 from archive import PygeArchive, GenericEntry
 
+
 #
 # FileCMB (.dat) as found in Roommate
 #

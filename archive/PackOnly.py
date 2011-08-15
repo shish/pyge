@@ -1,16 +1,17 @@
 import struct
 from archive import PygeArchive, GenericEntry
 
+
 #
 # PackOnly (.pd) as found in Cross Channel
 #
 # overrides "writeindex" to include padding (is this necessary?)
 #
-# unpack, repack, and data modification tested -- replacing 
+# unpack, repack, and data modification tested -- replacing
 # script and graphics works fine. Not quite binary compatible,
 # because the original packer doesn't put things 100% in order
 # (confirmed 2006/07/10)
-# 
+#
 #
 class PackOnly(PygeArchive):
     name = "PackOnly"
@@ -32,17 +33,16 @@ class PackOnly(PygeArchive):
         self.file.write(struct.pack("%ix" % (144 * (16384 - len(filelist)))))
 
 
-
 #
 # PackPlus (.pd) as found in Cross Channel
 #
 # overrides "writeindex" to include padding (is this necessary?)
 #
-# unpack, repack, and data modification tested -- replacing 
+# unpack, repack, and data modification tested -- replacing
 # script and graphics works fine. Not quite binary compatible,
 # because the original packer doesn't put things 100% in order
 # (confirmed 2006/07/10)
-# 
+#
 #
 class PackPlus(PackOnly):
     name = "PackPlus"
@@ -52,7 +52,7 @@ class PackPlus(PackOnly):
 
     def xorit(self, data):
         arr = array('B', data)
-        for i in xrange(len(arr)) :
+        for i in xrange(len(arr)):
             arr[i] ^= 0xFF
         return arr.tostring()
 
