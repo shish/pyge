@@ -1,7 +1,37 @@
 #!/usr/bin/env python
 
+import os
 import sys
 from optparse import OptionParser
+
+
+def write_file(name, data):
+    unix_name = name.replace("\\", "/")
+    (dirname, filename) = os.path.split(unix_name)
+    if len(dirname) > 0:
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+    ofile = open(unix_name, "w")
+    print "extracting %s" % (name)
+    # for some reason, the first couple of oggs in a
+    # pac3 archive are offset by an extra 12 bytes...
+    if data[0:32].find("OggS") > 0:
+        data = data[data[0:32].find("OggS"):]
+    ofile.write(data)
+
+
+def load_plugins():
+    plugins = {}
+    ar_dir = os.path.join(os.path.dirname(sys.argv[0]), "archive")
+    for fname in os.listdir(ar_dir):
+        if fname.endswith(".py"):
+            mod = __import__("archive." + fname[0:-3], fromlist=["*", ])
+            for cls_name in dir(mod):
+                cls = mod.__getattribute__(cls_name)
+                if hasattr(cls, "desc") and cls.desc:
+                    plugins[cls_name] = cls
+    return plugins
+
 
 def main(argv):
     parser = OptionParser()
@@ -21,19 +51,21 @@ def main(argv):
     parser.add_option("-L", "--format-list",
             action="store_true", dest="do_format_list", default=False,
             help="list known formats")
-    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args(argv)
 
-    from archive.VVV import VVV
-    plugins = {"VVV": VVV}
+    # load plugins into a map of name:class
+    plugins = load_plugins()
 
+    # meta modes
     if options.do_format_list:
         for name in plugins:
             print "%15s: %s" % (plugins[name].name, plugins[name].desc)
         return 0
 
+    # all active modes require a filename to work on
     if options.filename == None:
         print "Filename not specified"
-        return
+        return 1
     else:
         fp = open(options.filename, 'rb+')
         if options.format:
@@ -53,10 +85,20 @@ def main(argv):
         print "Unknown format"
         return
 
-    #archive = VVV(file(options.filename))
-    #print archive.detect()
-    for entry in archive.get_file_list():
-        print entry
+    # active modes
+    if options.do_create:
+        print "Creation not supported yet"
+        return 1
+        #archive.create(args)
+
+    if options.do_list:
+        for entry in archive.get_file_list():
+            print entry
+
+    if options.do_extract:
+        for entry in archive.get_file_list():
+            if not args or entry in args:
+                write_file(entry.name, entry.get_data())
 
 
 if __name__ == "__main__":

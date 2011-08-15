@@ -18,7 +18,7 @@ class PAC3(PygeArchive):
         self.file.seek(0x3FE) ; t2 = self.file.read(1).isalnum()
         self.file.seek(0x416) ; t3 = self.file.read(1).isalnum()
         self.file.seek(0x42E) ; t4 = self.file.read(1).isalnum()
-        return (self.filename[-3:] == "pac") and t1 and t2 and t3 and t4
+        return (self.file.name.endswith(".pac")) and t1 and t2 and t3 and t4
 
     def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
@@ -43,7 +43,7 @@ class PAC3b(PygeArchive):
         self.file.seek(0x3FE) ; t2 = self.file.read(1).isalnum()
         self.file.seek(0x416) ; t3 = self.file.read(1) == "\x00"
         self.file.seek(0x42E) ; t4 = self.file.read(1).isalnum()
-        return (self.filename[-3:] == "pac") and t1 and t2 and t3 and t4
+        return (self.file.name.endswith(".pac")) and t1 and t2 and t3 and t4
 
     def _readheader(self):
         self.count = struct.unpack(self.header_fmt,
