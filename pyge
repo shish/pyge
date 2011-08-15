@@ -37,6 +37,8 @@ def main(argv):
     parser = OptionParser()
     parser.add_option("-f", "--file", dest="filename",
             help="file (archive) to operate on", metavar="FILE")
+    parser.add_option("-d", "--dir", dest="directory", default=".",
+            help="directory to extract to", metavar="DIR")
     parser.add_option("-x", "--extract",
             action="store_true", dest="do_extract", default=False,
             help="extract files")
@@ -98,8 +100,8 @@ def main(argv):
 
     if options.do_extract:
         for entry in archive.get_file_list():
-            if not args or entry in args:
-                write_file(entry.name, entry.get_data())
+            if not args[1:] or entry in args[1:]:
+                write_file(os.path.join(options.directory, entry.name), entry.get_data())
 
 
 if __name__ == "__main__":
