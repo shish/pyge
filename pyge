@@ -63,6 +63,7 @@ def main(argv):
         return 0
 
     # all active modes require a filename to work on
+    archive = None
     if options.filename == None:
         print "Filename not specified"
         return 1
