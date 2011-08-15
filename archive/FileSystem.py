@@ -6,13 +6,13 @@ class FileSystem(PygeArchive):
     desc = "plain directory"
 
     def detect(self):
-        return os.path.isdir(self.filename)
+        return os.path.isdir(self.file.name)
 
     def _read(self):
         self.list = {}
         #for n in os.listdir(self.filename):
         #    self.list[n] = fpath, 0, os.stat(n).st_size
-        for root, dirs, files in os.walk(self.filename):
+        for root, dirs, files in os.walk(self.file.name):
             for n in files:
                 fpath = os.path.normpath(os.path.join(root, n))
                 if os.path.isfile(fpath):
