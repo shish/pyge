@@ -38,6 +38,11 @@ class PygeArchive(object):
     desc = "An extremely standard archive format"
     sig = None
     ext = None
+    header_fmt = "4si"
+    entry_fmt = "32sii"
+    entry_order = "nol"
+    encrypt = None
+    decrypt = None
 
     def __init__(self, file):
         self.file = file
