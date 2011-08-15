@@ -27,9 +27,9 @@ class Stuff(PygeArchive):
                 if char == "\x00":
                     break
                 name = name + char
-            self.list[name] = {"name":name, "start":offset, "length":length}
+            self.list.append(GenericEntry(self, name, offset, length))
             offset = offset + length
 
         offset = self.file.tell()
-        for n in self.list:
-            self.list[n]["start"] = self.list[n]["start"] + offset
+        for entry in self.list:
+            entry._offset = entry._offset + offset
