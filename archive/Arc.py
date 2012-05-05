@@ -1,0 +1,18 @@
+import struct
+from archive import PygeArchive, GenericEntry
+
+
+#
+# (.arc) Tokoya
+#
+# unpack & repack seem to work and give the same filesize, data mod not tested
+# since all formats inside the archive are proprietary...
+#
+class Arc(PygeArchive):
+    name = "Arc"
+    desc = "Tokoya"
+    sig = "\x01\x00\x00\x00"
+    ext = "arc"
+    header_fmt = "<4s4xi4x"
+    entry_fmt = "<13sii" # 21
+    entry_order = "nlo"
