@@ -10,7 +10,8 @@ inherits from PygePlugin, then override the methods as relevant.
 The following methods are exposed, to be used as the public API:
 
 detect()
-    check if this plugin can handle the file
+    check if this plugin can handle the file (checking against
+    self.filename (string) or self.file (filehandle))
 
 print_list()
     print a listing of contents to stdout
@@ -21,9 +22,36 @@ extract(filename)
 create(filenames)
     build an archive containing the named files
 
+In many cases, these methods don't need to be overridden at all, the
+programmer only needs to tweak their behaviour by setting some class
+variables:
 
-New plugins can override these, or override individual parts from
-the private API:
+    name = "Unnamed (BUG)"  # the human-readable name of the format
+    sig = None              # what the first few bytes of file look like
+    header_fmt = "4si"      # header = 4 byte string (signature), 32-bit int (file count)
+    entry_fmt = "32sii"     # entry = 32s (name), int (offset), int (length)
+    entry_order = "nol"     # name, offset, length
+    encrypt = None          # callback function to encrypt a file
+    decrypt = None          # callback function to decrypt a file
+
+For example, if you have an archive with header "ARCH\\x00\\x00\\x00\\x02"
+and a list of files [(4-byte offset, 4-byte length, 24-byte name), ...] you
+would create the class:
+
+ArchArchive(PygePlugin):
+    name = "Example Archive"
+    sig = "ARCH"
+    entry_order = "oln"
+    entry_fmt = "ii24s"
+
+Given these paramaters detection, extraction, and re-packing can all be
+handled using the flexible base methods.
+
+
+If the flexible base methods aren't flexible enough (for example, if the
+file records are variable-length, or the number of entries is stored at
+the end of the archive), you can override each method, or even specific
+sub-parts of each method:
 
 [to be documented]
 """
