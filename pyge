@@ -11,7 +11,7 @@ def write_file(name, data):
     if len(dirname) > 0:
         if not os.path.exists(dirname):
             os.makedirs(dirname)
-    ofile = open(unix_name, "w")
+    ofile = open(unix_name, "wb")
     print "extracting %s" % (name)
     # for some reason, the first couple of oggs in a
     # pac3 archive are offset by an extra 12 bytes...
@@ -101,7 +101,10 @@ def main(argv):
     if options.do_extract:
         for entry in archive.get_file_list():
             if not args[1:] or entry in args[1:]:
-                write_file(os.path.join(options.directory, entry.name), entry.get_data())
+                data = entry.get_data()
+                if(archive.decrypt):
+                    data = archive.decrypt(data)
+                write_file(os.path.join(options.directory, entry.name), data)
 
 
 if __name__ == "__main__":
