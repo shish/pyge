@@ -26,11 +26,11 @@ class FileSystem(PygeArchive):
         return True
 
     def create(self, filelist):
-        if os.path.isdir(self.filename) == False:
-            os.mkdir(self.filename)
+        if os.path.isdir(self.file.name) is False:
+            os.mkdir(self.file.name)
 
     def extract(self, filename):
-        ifile = open(self.filename + "/" + filename, 'rb')
+        ifile = open(self.file.name + "/" + filename, 'rb')
         ofile = open(filename, 'wb')
         ofile.write(ifile.read(os.stat(filename).st_size))
         ofile.close()
@@ -38,7 +38,7 @@ class FileSystem(PygeArchive):
 
     def append(self, filename):
         ifile = open(filename, 'rb')
-        ofile = open(self.filename + "/" + filename, 'wb')
+        ofile = open(self.file.name + "/" + filename, 'wb')
         ofile.write(ifile.read(os.stat(filename).st_size))
         ofile.close()
         ifile.close()

@@ -16,7 +16,7 @@ class AcPack(PygeArchive):
     def _readindex(self):
         for n in xrange(self.count):
             namez, start = struct.unpack(self.entry_fmt,
-                    self.file.read(struct.calcsize(self.entry_fmt)))
+                self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
             if n > 0:
                 self.list[n - 1]._length = start - self.list[n - 1]._offset

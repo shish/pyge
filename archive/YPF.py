@@ -2,6 +2,7 @@ from archive import PygeArchive, GenericEntry
 import struct
 import re
 
+
 #
 # YPF Archive, found in Eroge
 #
@@ -66,7 +67,7 @@ class YPF(PygeArchive):
             name = re.sub("[^a-zA-Z0-9\.\_\-/]", lambda x: "_0x%02X" % ord(x.group(0)), name)
             name = name.replace("_0x7F", "-")
             ext = self.xorit(ext)
-            
+
             #print repr(name), repr(ext), length, offset # x1 and x2 have no obvious meaning v.v
             self.list.append(GenericEntry(self, name + "." + ext, offset, length))
             
@@ -79,6 +80,6 @@ class YPF(PygeArchive):
     def xorit(self, data):
         data = [ord(x) for x in data]
         for i in xrange(len(data)):
-            data[i] = data[i] ^ 159
+            data[i] ^= 159
         data = "".join([chr(x) for x in data])
         return data

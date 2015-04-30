@@ -18,15 +18,14 @@ class FileCMB(PygeArchive):
         sig, = struct.unpack(self.header_fmt,
                 self.file.read(struct.calcsize(self.header_fmt)))
         if sig != self.sig:
-            print "sig needs to be '%s'\n" % (self.sig)
+            print "sig needs to be '%s'\n" % self.sig
             return False
         self.count = -1
 
     def _readindex(self):
-        line = ""
         while True:
             line = self.file.readline()
-            if line == None:
+            if line is None:
                 break
             elif line == "LIST-END\n":
                 break

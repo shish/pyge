@@ -19,6 +19,6 @@ class BIGF(PygeArchive):
         self.count = 10
         for n in xrange(self.count):
             length, start, namez = struct.unpack(self.entry_fmt,
-                    self.file.read(struct.calcsize(self.entry_fmt)))
+                self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
             self.list.append(GenericEntry(self, name, start, length))

@@ -44,7 +44,7 @@ ArchArchive(PygePlugin):
     entry_order = "oln"
     entry_fmt = "ii24s"
 
-Given these paramaters detection, extraction, and re-packing can all be
+Given these parameters detection, extraction, and re-packing can all be
 handled using the flexible base methods.
 
 
@@ -58,6 +58,7 @@ sub-parts of each method:
 
 import struct
 import sys, os
+
 
 class PygePlugin(object):
     name = "Unnamed (BUG)"
@@ -85,7 +86,7 @@ class PygePlugin(object):
 
         default: return true if the first few bytes of the file == self.sig
         """
-        if self.sig == None:
+        if self.sig is None:
             return False
         self.file.seek(0)
         head = self.file.read(len(self.sig))
@@ -115,9 +116,9 @@ class PygePlugin(object):
 
     def _readheader(self):
         sig, self.count = struct.unpack(self.header_fmt,
-                self.file.read(struct.calcsize(self.header_fmt)))
+            self.file.read(struct.calcsize(self.header_fmt)))
         if sig != self.sig:
-            print "sig needs to be '%s'\n" % (self.sig)
+            print "sig needs to be '%s'\n" % self.sig
             return False
 
     def _readindex(self):
@@ -128,11 +129,13 @@ class PygePlugin(object):
             elif self.entry_order == "nlo":
                 namez, length, offset = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))
-            elif self.order == "oln":
+            elif self.entry_order == "oln":
                 offset, length, namez = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))
+            else:
+                raise Exception("Unknown entry_order: %r" % self.entry_order)
             name = namez.strip("\x00")
-            self.list[name] = {"name":name, "start":offset, "length":length}
+            self.list[name] = {"name": name, "start": offset, "length": length}
 
     # extraction
     def extract(self, name=None, ofile=None):
@@ -141,7 +144,7 @@ class PygePlugin(object):
         if self.type == "image":
             self._extract_image(name, ofile)
         if self.type == "sound":
-            self.extract_sound(name, ofile)
+            self._extract_sound(name, ofile)
 
     def _extract_from_archive(self, name=None, ofile=None):
         if not self.list:
@@ -157,10 +160,10 @@ class PygePlugin(object):
                 if not os.path.exists(dirname):
                     os.makedirs(dirname)
             ofile = open(unix_name, "w")
-        print "extracting %s" % (name)
+        print "extracting %s" % name
         self.file.seek(self.list[name]["start"])
         data = self.file.read(self.list[name]["length"])
-        if(self.decrypt):
+        if self.decrypt:
             data = self.decrypt(data)
         # for some reason, the first couple of oggs in a
         # pac3 archive are offset by an extra 12 bytes...
@@ -176,9 +179,9 @@ class PygePlugin(object):
             oname = name+".png"
         self.file.seek(0)
         data = self.file.read()
-        if(self.decrypt):
+        if self.decrypt:
             data = self.decrypt(data)
-        file(self.filename+".png", "wb").write(data)
+        file(oname, "wb").write(data)
 
     def _extract_sound(self, name=None, oname=None):
         if not name:
@@ -187,9 +190,9 @@ class PygePlugin(object):
             oname = name+".wav"
         self.file.seek(0)
         data = self.file.read()
-        if(self.decrypt):
+        if self.decrypt:
             data = self.decrypt(data)
-        file(self.filename+".wav", "wb").write(data)
+        file(oname, "wb").write(data)
 
     # creations
     def create(self, filelist):
@@ -223,28 +226,29 @@ class PygePlugin(object):
                 self.file.write(struct.pack(self.entry_fmt, name, length, offset))
             elif self.entry_order == "oln":
                 self.file.write(struct.pack(self.entry_fmt, offset, length, name))
-            offset = offset + length
+            offset += length
 
     def _append(self, name, ifile):
         print "appending %s" % (name)
         data = ifile.read()
-        if(self.encrypt):
+        if self.encrypt:
             data = self.encrypt(data)
         self.file.write(data)
 
     def _create_image(self, filenames):
         for fn in filenames:
             data = file(fn).read()
-            if(self.encrypt):
+            if self.encrypt:
                 data = self.encrypt(data)
             file(self.filename, "wb").write(data)
 
     def _create_sound(self, filenames):
         for fn in filenames:
             data = file(fn).read()
-            if(self.encrypt):
+            if self.encrypt:
                 data = self.encrypt(data)
             file(self.filename, "wb").write(data)
+
 
 def load_plugins(path):
     sys.path.append(path)
@@ -254,7 +258,7 @@ def load_plugins(path):
     plugins = {}
     for plugin in list(PygePlugin.__subclasses__()):
         if plugin.name in plugins:
-            print "ERROR: duplicate plugin name: "+plugin.name
+            print "ERROR: duplicate plugin name: " + plugin.name
         plugins[plugin.name] = plugin
     return plugins
 

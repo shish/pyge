@@ -1,5 +1,7 @@
 import struct
-from archive import PygeArchive, GenericEntry
+import os
+
+from archive import PygeArchive
 
 
 #

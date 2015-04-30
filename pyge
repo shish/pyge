@@ -12,7 +12,7 @@ def write_file(name, data):
         if not os.path.exists(dirname):
             os.makedirs(dirname)
     ofile = open(unix_name, "wb")
-    print "extracting %s" % (name)
+    print "extracting %s" % name
     # for some reason, the first couple of oggs in a
     # pac3 archive are offset by an extra 12 bytes...
     if data[0:32].find("OggS") > 0:
@@ -35,24 +35,20 @@ def load_plugins():
 
 def main(argv):
     parser = OptionParser()
-    parser.add_option("-f", "--file", dest="filename",
-            help="file (archive) to operate on", metavar="FILE")
-    parser.add_option("-d", "--dir", dest="directory", default=".",
-            help="directory to extract to", metavar="DIR")
-    parser.add_option("-x", "--extract",
-            action="store_true", dest="do_extract", default=False,
-            help="extract files")
-    parser.add_option("-l", "--list",
-            action="store_true", dest="do_list", default=False,
-            help="list archive contents")
-    parser.add_option("-c", "--create",
-            action="store_true", dest="do_create", default=False,
-            help="create new archive")
+    parser.add_option("-f", "--file", dest="filename", metavar="FILE",
+                      help="file (archive) to operate on")
+    parser.add_option("-d", "--dir", dest="directory", default=".", metavar="DIR",
+                      help="directory to extract to")
+    parser.add_option("-x", "--extract", dest="do_extract", action="store_true", default=False,
+                      help="extract files")
+    parser.add_option("-l", "--list", action="store_true", dest="do_list", default=False,
+                      help="list archive contents")
+    parser.add_option("-c", "--create", action="store_true", dest="do_create", default=False,
+                      help="create new archive")
     parser.add_option("-F", "--format", dest="format",
-            help="archive format", metavar="FMT")
-    parser.add_option("-L", "--format-list",
-            action="store_true", dest="do_format_list", default=False,
-            help="list known formats")
+                      help="archive format", metavar="FMT")
+    parser.add_option("-L", "--format-list", action="store_true", dest="do_format_list", default=False,
+                      help="list known formats")
     (options, args) = parser.parse_args(argv)
 
     # load plugins into a map of name:class
@@ -66,7 +62,7 @@ def main(argv):
 
     # all active modes require a filename to work on
     archive = None
-    if options.filename == None:
+    if options.filename is None:
         print "Filename not specified"
         return 1
     else:
@@ -80,11 +76,11 @@ def main(argv):
             for name in plugins:
                 # FIXME: pick highest scoring
                 if plugins[name](fp).detect() > 0:
-                    print "Detected format: %s" % (plugins[name].name)
+                    print "Detected format: %s" % plugins[name].name
                     archive = plugins[name](fp)
                     break
 
-    if archive == None:
+    if archive is None:
         print "Unknown format"
         return
 
@@ -102,7 +98,7 @@ def main(argv):
         for entry in archive.get_file_list():
             if not args[1:] or entry in args[1:]:
                 data = entry.get_data()
-                if(archive.decrypt):
+                if archive.decrypt:
                     data = archive.decrypt(data)
                 write_file(os.path.join(options.directory, entry.name), data)
 

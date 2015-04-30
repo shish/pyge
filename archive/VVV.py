@@ -21,6 +21,6 @@ class VVV(PygeArchive):
             namez, x1, length, x2 = struct.unpack(self.entry_fmt,
                 self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
-            #print name, x1, length, x2 # x1 and x2 have no obvious meaning v.v
+            #  print name, x1, length, x2 # x1 and x2 have no obvious meaning v.v
             self.list.append(GenericEntry(self, name, offset, length))
             offset = offset + length

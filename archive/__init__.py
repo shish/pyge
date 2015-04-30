@@ -87,7 +87,7 @@ class PygeArchive(object):
             sig, self.count = struct.unpack(self.header_fmt,
                     self.file.read(struct.calcsize(self.header_fmt)))
             if sig != self.sig:
-                print "sig needs to be '%s'\n" % (self.sig)
+                print "sig needs to be '%s'\n" % self.sig
                 return False
 
     def _readindex(self):
@@ -98,7 +98,7 @@ class PygeArchive(object):
             elif self.entry_order == "nlo":
                 namez, length, offset = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))
-            elif self.order == "oln":
+            elif self.entry_order == "oln":
                 offset, length, namez = struct.unpack(self.entry_fmt,
                     self.file.read(struct.calcsize(self.entry_fmt)))
             name = namez.strip("\x00")
